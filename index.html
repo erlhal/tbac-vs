@@ -1,0 +1,659 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <link href="http://s.tidsbanken.net/highlight/styles/solarized_light.css" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../src/css/tbac.v2.css" rel="stylesheet" type="text/css">
+    
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+    <script src="../src/js/tb.liste.js"></script>
+    <script src="../src/js/tbac.v2.js"></script>
+</head>
+
+<div class="container">
+    <div class="row">
+        
+    <div class="col-md-2">
+        <ul class="nav">
+            <li class="header">Meny</li>
+        </ul>
+    </div>
+    <div class="col-md-10">
+        <div class="mal-side">
+            <div class="row">
+                <div class="col col-md-12">
+                    <h1>Tidsbanken autocomplete</h1>
+                    <ul class="filliste mal-liste">
+                        <li><a href="../src/css/tbac.v2.css">tbac.v2.css</a></li>
+                        <li><a href="../src/js/tbac.v2.js">tbac.v2.js</a></li>
+                        <li><a href="../src/js/tb.liste.js">tb.liste.js</a></li>
+                        <li><a href="server/tbac_bs.asp">tbac_bs.asp</a></li>
+                    </ul>
+                    <p>
+                        Her er dokumentasjonen for <code>.tbacinput</code>.
+                    </p>
+                    <hr>
+                    <ul class="linkliste mal-liste">
+                        <li><a href="#Konfigurasjon-seksjon">Konfigurasjon</a></li>
+                        <li><a href="#Interaksjon-seksjon">Interaksjon</a></li>
+                        <li><a href="#Eksempel-seksjon">Eksempler</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row hovedseksjon" id="Konfigurasjon-seksjon">
+                <div class="col col-md-12">
+                    <h2>Konfigurasjon</h2>
+                    <p>Konfigurering gjøres vha</p>
+                    <ul style="list-style-type: none; display:block; padding: 0;">
+                        <li>
+                            <div>
+                                <h4><a href="#HTML-Attributter">Attributter</a></h4></div>
+                            sette <code>data-</code> attributter på ett input element med klassen <code>tbacinput</code> og vente til autoinitiering av alle elementer med klassen <code>tbacinput</code> kjører i <code>$(document).ready</code> eventen:
+                            <pre><code class="html">&lt;input class=&quot;tbacinput&quot; data-actype=&quot;pro&quot;&gt;</code></pre>
+                        </li>
+                        <li><i class="text-muted">og/eller</i></li>
+                        <li>
+                            <div>
+                                <h4><a href="#Javascript-konfig">Konfig-objekt</a></h4></div>
+                            velge ett input element med jQuery, overstyre default-konfig (minimum <code>actype</code>) parametre vha i ett <a href="#Javascript-konfig">konfig</a> javascript-objekt og så starte manuelt:
+                            <pre><code class="js">var konfig = { actype: 'pro' };<br>$('#testboks').tbac(konfig)</code></pre>
+                        </li>
+                    </ul>
+                    <p>Eneste som kreves er <a href="#data-actype-attributt"><strong>typen</strong></a> boks settes.</p>
+                    <!-- <div class="luft-topp-seksjon">
+
+                        <h3 id="HTML-Attributter">HTML (Attributter)</h3>
+                        <p><code>input</code> element med klassen tbacinput og konfigurasjon satt vha <code>data-</code> attributter</p>
+                        <pre><code class="html">&lt;input class=&quot;tbacinput&quot; data-actype=&quot;pro&quot;&gt;</code></pre>
+
+                    </div> -->
+                    <div class="luft-topp-seksjon">
+                        <h3 id="HTML-Attributter">HTML (Attributter)</h3>
+                        <h4>Minimum</h4>
+                        <p>Attributten data-actype satt til en gyldig verdi</p>
+                        <pre><code class="html">&lt;input class=&quot;tbacinput&quot; data-actype=&quot;pro&quot;&gt;</code></pre>
+                    </div>
+                    <div class="luft-topp-seksjon">
+                        <h4>Vanligste</h4>
+                        <div class="mal-liste-item">
+                            <h4 id="data-actype-attributt"><code>data-actype</code></h4>
+                            <ul>
+                                <li><code>avd</code>: Avdeling</li>
+                                <li><code>arb</code>: Arbeidstype</li>
+                                <li><code>ans</code>: Ansatt</li>
+                                <li><code>pro</code>: Prosjekt</li>
+                                <li><code>prl</code>: Prosjektlinje</li>
+                                <li><code>akt</code>: Aktivitet</li>
+                                <li><code>art</code>: Lønnsart</li>
+                                <li><code>hav</code>: Hovedavdeling (må implementeres)</li>
+                                <li><code>el1</code>: Element 1 (må implementeres)</li>
+                                <li><code>el1</code>: Element 1 (må implementeres)</li>
+                            </ul>
+                        </div>
+                        <div class="mal-liste-item">
+                            <h4><code>data-verdi</code><small>Setter initiell verdi.</small></h4>
+                            <p>
+                                <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;pro&quot; <br>    data-verdi=&quot;1117&quot; <br>    </code></pre>
+                            </p>
+                        </div>
+                        <div class="mal-liste-item">
+                            <h4><code>data-tekst</code><small>Setter navnet/teksten på valgt post</small></h4>
+                            <p>
+                                <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;pro&quot; <br>    data-verdi=&quot;1117&quot; <br>    data-tekst="Taktekking"&gt;</code></pre>
+                            </p>
+                        </div>
+                        <div class="mal-liste-item">
+                            <h4><code>data-filter</code><small>En WHERE-setning (uten WHERE).</small></h4>
+                            <p>Filtrering av data på server</p>
+                            <p>Eksempel: <code>AvdelingID='1' AND ErAvdelingsGruppe=False</code></p>
+                            <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;pro&quot; <br>    data-filter="Utfort=false" &gt;</code></pre>
+                        </div>
+                        <div class="mal-liste-item">
+                            <h4><code>data-filtermal</code><small>En WHERE-setning med placeholder-tekst som erstattes av verdier fra andre Tbac bokser dynamisk .</small></h4>
+                            <p>Eksempel: <code>AvdelingID='<strong>?avd</strong>' AND ErAvdelingsGruppe=False</code></p>
+                            <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;akt&quot; <br>    data-filtermal="Oppgavenr='?pro'" <br>    data-filterkilde=&quot;#prosjektfilterBoks&quot;&gt;</code></pre>
+                        </div>
+                        <div class="mal-liste-item">
+                            <h4><code>data-filterkilde</code><small>Kilde for verdi som flettes inn i data-filtermal</small></h4>
+                            <p>CSS-selector til ett <code>select</code>, <code>input</code>, <code>tbacinput</code> eller hvilket som helst element med en verdi tilgjengelig via <code>$(element).val()</code> eller <code>$(element).data('verdi')</code>. </p>
+                            <p>Verdien til denne boksen erstatter <code>?abc</code> i <code>data-filtermal</code> og resultatet erstatter statisk filter satt med <code>data-filter</code> attributten og brukes på samme måte</p>
+                            <p>Eksempel: <code>&lt;input class=&quot;tbacinput&quot; data-actype=&quot;akt&quot; data-filtermal=&quot;OppgaveNr='?pro'&quot; data-filterkilde=&quot;#prosjekt-velger&quot;&gt;</code> vil filtreres med filteret <code>data-filter="OppgaveNr='1000'"</code> om prosjekt nr 1000 var verdien til en select/input med id="prosjekt-velger" for eksempel.</p>
+                            <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;akt&quot; <br>    data-filtermal="Oppgavenr='?pro'" <br>    data-filterkilde=&quot;#prosjektfilterBoks&quot;&gt;</code></pre>
+                        </div>
+                    </div>
+                    <!-- <h4>Eksempler på bruk</h4>
+                        <div class="mal-liste-item">
+                            <h5>Minimum</h5>
+                            <p>Attributten data-actype satt til en gyldig verdi</p>
+                            <pre><code class="html">&lt;input class=&quot;tbacinput&quot; data-actype=&quot;pro&quot;&gt;</code></pre>
+                        </div>
+
+                        <d5v class="mal-lis5e-item">
+                            <h5>Startverdier</h5>
+                            <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;pro&quot; <br>    data-verdi=&quot;1117&quot; <br>    data-tekst="Taktekking"&gt;</code></pre>
+                        </div>
+
+                        <div class="mal-liste-item">
+                            <h5>Statisk filtrering</h5>
+                            <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;pro&quot; <br>    data-filter="Utfort=false" &gt;</code></pre>
+                        </div>
+
+                        <div class="mal-liste-item">
+                            <h5>Dynamisk filtrering</h5>
+                            <pre><code class="html"><br>&lt;input <br>    class=&quot;tbacinput&quot; <br>    data-actype=&quot;akt&quot; <br>    data-filtermal="Oppgavenr='?pro'" <br>    data-filterkilde=&quot;#prosjektfilterBoks&quot;&gt;</code></pre>
+                        </div> -->
+                    <div class="seksjon">
+                        <h3 id="Javascript-konfig">Kode (Javascript)</h3>
+                        <h4>Minimum</h4>
+                        <p>Konfig-objekt med gyldig verdi i actype property</p>
+                        <pre><code class="js">/* Gitt HTML: &lt;input id=&quot;prosjektTbac&quot;&gt; */<br>$('#prosjektTbac').tbac({ actype: 'pro' });</code></pre>
+                        <br>
+                        <p>Dette er standardinnstillingsobjektet. Alle kan overstyres ved å sende med ett <code>konfig</code> objekt ved aktivering. </p>
+                        <pre><code class="json" data-mal-jskode="konfig-kode"></code></pre>
+                    </div>
+                </div>
+                <div class="row hovedseksjon" id="Interaksjon-seksjon">
+                    <div class="col col-md-12">
+                        <h2>Interaksjon</h2>
+                        <h3>Overblikk</h3>
+                        <h3>Metoder</h3>
+                        <h3>Events</h3>
+                    </div>
+                </div>
+                <div class="row hovedseksjon" id="Eksempel-seksjon">
+                    <div class="col col-md-12">
+                        <h2>Eksempler</h2>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Prosjekter
+                            <small class="eksempel-beskrivelse">
+                                Enkel søkeboks for å søke i åpne prosjekter
+                            </small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <input class="tbacinput2 form-control" data-actype="pro">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <!--
+                        <input class="tbacinput2 form-control" data-actype="pro" data-verdi="1117" data-autofyll="false" data-grupper='["Sist brukt","Søk","Andre"]' data-multiselect="false" data-fasteposterTopp='[{"id":"","navn":"Fast post nr 1"}, {"id":"","navn":"Fast post nr 2"}]' data-fasteposterBunn='[{"id":"","navn":"Fast post nr 3"}]'>
+                        <pre><code class="html">&lt;input <br>class=&quot;tbacinput form-control&quot; <br>data-actype=&quot;pro&quot; <br>data-verdi=&quot;1117&quot; <br>data-autofyll=&quot;false&quot; <br>data-grupper='[&quot;Sist brukt&quot;,&quot;S&oslash;k&quot;,&quot;Andre&quot;]' <br>data-fasteposter='{&quot;topp&quot;:{&quot;label&quot;:[{&quot;id&quot;:&quot;ft1&quot;,&quot;navn&quot;:&quot;Fast post nr 1&quot;}, {&quot;id&quot;:&quot;ft2&quot;,&quot;navn&quot;:&quot;Fast post nr 2&quot;}]'&gt;</code></pre> -->
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Aktiviteter
+                            <small class="eksempel-beskrivelse">Enkel søkeboks for å søke i tblAktiviteter</small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <input class="tbacinput2 form-control" data-actype="akt">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Kunder
+                            <small class="eksempel-beskrivelse">Enkel søkeboks for å søke i tblKunder</small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <input class="tbacinput2 form-control" data-actype="kun">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <hr>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Startverdi
+                            <small class="eksempel-beskrivelse">
+                                Velge prosjekt 1117 som initiell verdi, tekst hentes med ajax ved oppsett av boks
+                            </small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <input class="tbacinput2 form-control" data-actype="pro" data-verdi="1117">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Startverdi #2
+                            <small class="eksempel-beskrivelse">
+                                Velge prosjekt 1117 som initiell verdi, tekst overstyres til 'Tesssster' med attributt data-tekst
+                            </small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <input class="tbacinput2 form-control" data-actype="pro" data-verdi="1117" data-tekst="Tessssster">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Faste poster
+                            <small class="eksempel-beskrivelse">
+                                Ha de to mest brukte aktivitetene som 'faste' treff i toppen av listen
+                            </small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <input class="tbacinput2 form-control" data-actype="akt" data-grupper='["", "", "c"]' data-fasteposterTopp='[{"id":"1","navn":"Populær aktivitet"}, {"id":"2","navn":"Mye brukt aktivitet"}]'>
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Linket
+                            <small class="eksempel-beskrivelse">
+                                Filtrér en boks på en annen
+                            </small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <h5>Prosjekt</h5>
+                                <input class="tbacinput2 form-control" data-actype="pro" data-verdi="1117" id="filterkilde">
+                                <h5>Aktivitet</h5>
+                                <input class="tbacinput2 form-control" data-actype="akt" data-filtermal="Oppgavenr='?pro'" data-filterkilde="#filterkilde">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Linket #2
+                            <small class="eksempel-beskrivelse">
+                                Filtrér en boks på to andre
+                            </small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <h5>Prosjekt</h5>
+                                <input class="tbacinput2 form-control" data-actype="pro" data-verdi="1117" id="filterkilde-2">
+                                <h5>Prosjektlinje</h5>
+                                <input class="tbacinput2 form-control" data-actype="prl" id="filterkilde-3" data-filtermal="Oppgavenr='?pro'" data-filterkilde="#filterkilde-2">
+                                <h5>Aktivitet</h5>
+                                <input class="tbacinput2 form-control" data-actype="akt" data-filtermal="Oppgavenr='?pro',AvsnittsNr='?prl'" data-filterkilde="#filterkilde-2, #filterkilde-3">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                        <div class="eksempel row">
+                            <div class="col col-md-12">
+                                <h3 class="eksempel-header">
+                            Prosjektlinjer
+                            <small class="eksempel-beskrivelse">
+                                Velge prosjekt 1117 som initiell verdi, tekst overstyres til 'Tesssster' med attributt data-tekst
+                            </small>
+                        </h3>
+                            </div>
+                            <div class="eksempel-display col col-md-6">
+                                <input class="tbacinput2 form-control" data-actype="prl" data-verdi="32" data-tekst="Tessssster">
+                            </div>
+                            <div class="eksempel-koden col col-md-6"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tbac-overlay">
+                    <ul class="tbac-overlay-deler">
+                        <li class="tbac-overlay-seksjon tbac-overlay-topp">
+                            <input class="tbac-overlay-input"> </li>
+                        <li class="tbac-overlay-seksjon tbac-overlay-resultater">
+                            <ul>
+                                <li>Resultat 1</li>
+                                <li>Resultat 2</li>
+                                <li>Resultat 3</li>
+                                <li>Resultat 4</li>
+                                <li>Resultat 5</li>
+                            </ul>
+                        </li>
+                        <li class="tbac-overlay-seksjon tbac-overlay-bunn clearfix">
+                            <button class="btn btn-primary pull-right">Ferdig</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <script src="http://s.tidsbanken.net/highlight/highlight.pack.js" type="text/javascript"></script>
+            
+            
+            <script>
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+
+                });
+
+                $('#togglelay').click(function() {
+                    $('body').toggleClass('open-tbac');
+                });
+
+                $('.jskode').each(function(i, block) {
+                    console.log(block);
+                    var container = $('[data-mal-jskode="' + $(this).attr('id') + '"]'),
+                        tekst = $(this).html();
+                    container.html(tekst);
+                    hljs.highlightBlock(container.get(0));
+                });
+
+                $('.htmlkode').each(function(i, block) {
+                    console.log('Block', block);
+                    var container = $('[data-mal-htmlkode="' + $(this).attr('id') + '"]'),
+                        tekst = escapeHTML(($(this).html() || this.innerHTML || '')).replace(/tbacinput2/ig, 'tbacinput').replace(/\sclass/ig, '<br>&nbsp;&nbsp;&nbsp;&nbsp;class').replace(/\sdata\-/ig, '&nbsp;&nbsp;&nbsp;&nbsp;<br>data-'), //.replace(/tbacinput2/ig, 'tbacinput')),
+                        el = $('<code></code>').addClass('html').wrap('<pre>').html(tekst.replace(/quot/ig, '')).appendTo(container).get(0);
+                    $(this).find('.tbacinput2').removeClass('tbacinput2').addClass('tbacinput').tbac();
+                    hljs.highlightBlock(el);
+                });
+
+                $('.eksempel').each(function() {
+                    var container = $(this).find('.eksempel-koden'),
+                        tekst = escapeHTML(($(this).find('.eksempel-display').html() || '')).replace(/tbacinput2/ig, 'tbacinput').replace(/\sclass/ig, '<br>&nbsp;&nbsp;&nbsp;&nbsp;class').replace(/\sdata\-/ig, '<br>&nbsp;&nbsp;&nbsp;&nbsp;data-'), //.replace(/tbacinput2/ig, 'tbacinput')),
+                        el = $('<code></code>').addClass('html').wrap('<pre>').html(tekst.replace(/&amp;(quot;)/ig, '\"')).appendTo(container).get(0);
+                    $(this).find('.tbacinput2').removeClass('tbacinput2').addClass('tbacinput').tbac();
+                    hljs.highlightBlock(el);
+                });
+
+
+            });
+            </script>
+            <script type="text/javascript">
+            var hex = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+
+
+            function escapeHTML(tekst) {
+                var preescape = tekst || '';
+                var escaped = "";
+
+                var i = 0;
+                var brEscape = false; //document.getElementById('br').checked;
+                var tagEscape = true; //document.getElementById('tag').checked;
+                var others = true; //document.getElementById('other').checked;
+                var nbsp = false; //document.getElementById('nbsp').checked;
+                for (i = 0; i < preescape.length; i++) {
+                    var p = preescape.charAt(i);
+
+                    if (others) p = "" + escapeCharx(p);
+                    if (tagEscape) p = "" + escapeTags(p);
+                    if (brEscape) p = "" + escapeBR(p);
+                    if (nbsp) p = "" + escapeNBSP(p);
+
+                    escaped = escaped + p;
+                }
+
+                return escaped;
+            }
+
+
+            function escapeBR(original) {
+                var thechar = original.charCodeAt(0);
+
+                switch (thechar) {
+                    case 10:
+                        return "<br>";
+                        break; //newline
+                    case '\r':
+                        break;
+                }
+                return original;
+            }
+
+            function escapeNBSP(original) {
+                var thechar = original.charCodeAt(0);
+                switch (thechar) {
+                    case 32:
+                        return "&nbsp;";
+                        break; //space
+                }
+                return original;
+            }
+
+
+            function escapeTags(original) {
+                var thechar = original.charCodeAt(0);
+                switch (thechar) {
+                    case 60:
+                        return "&lt;";
+                        break; //<
+                    case 62:
+                        return "&gt;";
+                        break; //>
+                    case 34:
+                        return "&quot;";
+                        break; //"
+                }
+                return original;
+
+            }
+
+            function escapeCharx(original) {
+                var found = true;
+                var thechar = original.charCodeAt(0);
+                switch (thechar) {
+                    case 38:
+                        return "&amp;";
+                        break;
+                    case 198:
+                        return "&AElig;";
+                        break;
+                    case 193:
+                        return "&Aacute;";
+                        break;
+                    case 194:
+                        return "&Acirc;";
+                        break;
+                    case 192:
+                        return "&Agrave;";
+                        break;
+                    case 197:
+                        return "&Aring;";
+                        break;
+                    case 195:
+                        return "&Atilde;";
+                        break;
+                    case 196:
+                        return "&Auml;";
+                        break;
+                    case 199:
+                        return "&Ccedil;";
+                        break;
+                    case 208:
+                        return "&ETH;";
+                        break;
+                    case 201:
+                        return "&Eacute;";
+                        break;
+                    case 202:
+                        return "&Ecirc;";
+                        break;
+                    case 200:
+                        return "&Egrave;";
+                        break;
+                    case 203:
+                        return "&Euml;";
+                        break;
+                    case 205:
+                        return "&Iacute;";
+                        break;
+                    case 206:
+                        return "&Icirc;";
+                        break;
+                    case 204:
+                        return "&Igrave;";
+                        break;
+                    case 207:
+                        return "&Iuml;";
+                        break;
+                    case 209:
+                        return "&Ntilde;";
+                        break;
+                    case 211:
+                        return "&Oacute;";
+                        break;
+                    case 212:
+                        return "&Ocirc;";
+                        break;
+                    case 210:
+                        return "&Ograve;";
+                        break;
+                    case 216:
+                        return "&Oslash;";
+                        break;
+                    case 213:
+                        return "&Otilde;";
+                        break;
+                    case 214:
+                        return "&Ouml;";
+                        break;
+                    case 222:
+                        return "&THORN;";
+                        break;
+                    case 218:
+                        return "&Uacute;";
+                        break;
+                    case 219:
+                        return "&Ucirc;";
+                        break;
+                    case 217:
+                        return "&Ugrave;";
+                        break;
+                    case 220:
+                        return "&Uuml;";
+                        break;
+                    case 221:
+                        return "&Yacute;";
+                        break;
+                    case 225:
+                        return "&aacute;";
+                        break;
+                    case 226:
+                        return "&acirc;";
+                        break;
+                    case 230:
+                        return "&aelig;";
+                        break;
+                    case 224:
+                        return "&agrave;";
+                        break;
+                    case 229:
+                        return "&aring;";
+                        break;
+                    case 227:
+                        return "&atilde;";
+                        break;
+                    case 228:
+                        return "&auml;";
+                        break;
+                    case 231:
+                        return "&ccedil;";
+                        break;
+                    case 233:
+                        return "&eacute;";
+                        break;
+                    case 234:
+                        return "&ecirc;";
+                        break;
+                    case 232:
+                        return "&egrave;";
+                        break;
+                    case 240:
+                        return "&eth;";
+                        break;
+                    case 235:
+                        return "&euml;";
+                        break;
+                    case 237:
+                        return "&iacute;";
+                        break;
+                    case 238:
+                        return "&icirc;";
+                        break;
+                    case 236:
+                        return "&igrave;";
+                        break;
+                    case 239:
+                        return "&iuml;";
+                        break;
+                    case 241:
+                        return "&ntilde;";
+                        break;
+                    case 243:
+                        return "&oacute;";
+                        break;
+                    case 244:
+                        return "&ocirc;";
+                        break;
+                    case 242:
+                        return "&ograve;";
+                        break;
+                    case 248:
+                        return "&oslash;";
+                        break;
+                    case 245:
+                        return "&otilde;";
+                        break;
+                    case 246:
+                        return "&ouml;";
+                        break;
+                    case 223:
+                        return "&szlig;";
+                        break;
+                    case 254:
+                        return "&thorn;";
+                        break;
+                    case 250:
+                        return "&uacute;";
+                        break;
+                    case 251:
+                        return "&ucirc;";
+                        break;
+                    case 249:
+                        return "&ugrave;";
+                        break;
+                    case 252:
+                        return "&uuml;";
+                        break;
+                    case 253:
+                        return "&yacute;";
+                        break;
+                    case 255:
+                        return "&yuml;";
+                        break;
+                    case 162:
+                        return "&cent;";
+                        break;
+                    default:
+                        found = false;
+                        break;
+                }
+                if (!found) {
+                    if (thechar > 127) {
+                        var c = thechar;
+                        var a4 = c % 16;
+                        c = Math.floor(c / 16);
+                        var a3 = c % 16;
+                        c = Math.floor(c / 16);
+                        var a2 = c % 16;
+                        c = Math.floor(c / 16);
+                        var a1 = c % 16;
+                        //  alert(a1);
+                        return "&#x" + hex[a1] + hex[a2] + hex[a3] + hex[a4] + ";";
+                    } else {
+                        return original;
+                    }
+                }
+            }
+            </script>
+            <script type="tb/eksempelkode" id="konfig-kode" class="jskode">
+                $.fn.tbac.defaults = { url: 'server/tbac_bs.asp', // adresse til søkekoden actype: '', params: { // parametre som sendes til server ved søk q: '', // søketeksten type: '', // typen boks (data-actype) fra: 0, // hopp over de først x resultatene grense: 20, // TOP x sortering: '', // ORDER BY x filter: '' // WHERE x }, filtermal: '', // streng der verdien i filterkilde elementet flettes inn filterkilde: null, // id|class|selector til ett element med .val() metode eller verdi i data('verdi') // data-filtermal="OppgaveNr='?pro' --> data-filter="OppgaveNr='1000'" for eksempel. //statisk: false, // ingen serversøk //items: null, // array eller funksjon som kan bruker som datakilde ved statisk=true selectedItem: null, // startverdien i form av ett item-objekt ({ id: '1000', navn: 'Testprosjekt'}) fasteposter: { // faste 'items' over og under resultatene grupper: ["Topp", "Resultater", "Andre"], topp: [], bunn: [] }, //required: false, // om det skal være mulig å tømme boksen //disableTom: true, // om inputen skal disables om det ikke får treff fra server ingenverdi: '', //virtual: true, // virtuell rendering av lange lister rowHeight: 26, // radhøyde i dropdown antallItems: 8, // maks antall items som vises i dropdown minBokstaver: 1, // minimum antall bokstaver en må skrive for å trigge søk delay: 150, // forsinkelse etter tastetrykk før søk starter (om en ikke er ferdig) bredde: '100%', // ønsket bredde på dropdown. multiselect: false, // select="multiple" erstatning autofyll: false, // automatisk fyll ut boksen med først treff og select den tillagte delen selectFirst: false, // automatisk valg av første treff om det bare er 1 treff placeholder: '', // brukes til å vise antallet valgt ved multiselect // diverse hooks for å behandle resultatdataene etter søk men før render // eller for å søke i statiske data matcher: null, // function(item, query) { if (blabla) return item; } formatter: null, // function(item) { return (!item ? '' : (item.id+' '+item.navn)); } scorer: null, // function(items, query) { return items; } sorter: null, // function(items, query) { return items; } templates: { wrapper: '&lt;div class=&quot;tbaheadwrapper tbac&quot;&gt;&lt;div class=&quot;input-group tbac-inner&quot;&gt;&lt;/div&gt;&lt;/div&gt;', clear: '&lt;span class=&quot;input-group-addon tbac-toggle tbac-clear&quot; tabindex=&quot;-1&quot;&gt;&lt;i class=&quot;icon-remove&quot;&gt;&lt;/i&gt;&lt;/span&gt;', konfig: '&lt;span class=&quot;input-group-addon tbac-toggle tbac-konfig&quot; tabindex=&quot;-1&quot;&gt;&lt;i class=&quot;icon-cog&quot;&gt;&lt;/i&gt;&lt;/span&gt;', button: '&lt;span class=&quot;input-group-addon tbac-toggle tbac-toggle-dropdown&quot; tabindex=&quot;-1&quot;&gt;&lt;i class=&quot;icon-caret-down&quot;&gt;&lt;/i&gt;&lt;/span&gt;', item: '&lt;li class=&quot;tbac-item ${cl}&quot; title=&quot;${navn}&quot;&gt;&lt;span class=&quot;id&quot;&gt;{{html $item.hl(id)}}&lt;/span&gt; &lt;span&gt;{{html $item.hl(navn)}}&lt;/span&gt; &lt;span class=&quot;pull-right&quot;&gt;${poeng}&lt;/span&gt;&lt;/li&gt;',
+                <br/> menu: '&lt;div class=&quot;tbac-dropdown clearfix&quot;&gt;&lt;div class=&quot;tbac-topp&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;tbac-item tbac-velgingen&quot;&gt;Ingen&lt;/a&gt;&lt;/div&gt;&lt;div class=&quot;tbac-liste&quot;&gt;&lt;/div&gt;&lt;div class=&quot;tbac-bunn&quot;&gt;&lt;p class=&quot;tbac-bunn-tekst&quot;&gt;&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;' } };
+            </script>
+ 
+</body>
+</html>
